@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d15" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="NeuroX – منصة تعديل صور عصرية: رفع، تعديل، اقتصاص، تدوير، وتحميل." />
+    <title>NeuroX — منصة تعديل الصور</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="nx-header">
+      <div class="nx-brand">
+        <div class="nx-logo" aria-hidden="true">NX</div>
+        <div class="nx-title">
+          <strong>NeuroX</strong>
+          <span>منصة تعديل الصور</span>
+        </div>
+      </div>
+      <div class="nx-actions">
+        <label class="nx-button primary" for="file-input">
+          <input id="file-input" type="file" accept="image/*" hidden />
+          <span class="icon">📷</span>
+          <span>رفع صورة</span>
+        </label>
+        <button class="nx-button ghost" id="reset-all" type="button">
+          <span class="icon">↺</span>
+          <span>إعادة ضبط</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="nx-main">
+      <section class="nx-panel">
+        <div class="nx-dropzone" id="dropzone">
+          <div class="dz-visual">
+            <div class="dz-ring"></div>
+            <div class="dz-ring"></div>
+          </div>
+          <div class="dz-content">
+            <p class="dz-title">اسحب وأفلت الصورة هنا</p>
+            <p class="dz-sub">أو اضغط على زر <strong>رفع صورة</strong> بالأعلى</p>
+          </div>
+        </div>
+
+        <nav class="nx-tabs" role="tablist">
+          <button class="nx-tab active" data-tab="filters" role="tab" aria-selected="true">الفلاتر</button>
+          <button class="nx-tab" data-tab="transform" role="tab">التحويل</button>
+          <button class="nx-tab" data-tab="crop" role="tab">الاقتصاص</button>
+          <button class="nx-tab" data-tab="export" role="tab">الإخراج</button>
+        </nav>
+
+        <div class="nx-tabpanes">
+          <div class="nx-pane active" id="pane-filters" role="tabpanel">
+            <div class="control">
+              <label for="brightness">السطوع</label>
+              <input type="range" id="brightness" min="0" max="300" value="100" />
+              <div class="value" data-for="brightness">100%</div>
+            </div>
+            <div class="control">
+              <label for="contrast">التباين</label>
+              <input type="range" id="contrast" min="0" max="300" value="100" />
+              <div class="value" data-for="contrast">100%</div>
+            </div>
+            <div class="control">
+              <label for="saturation">التشبع</label>
+              <input type="range" id="saturation" min="0" max="300" value="100" />
+              <div class="value" data-for="saturation">100%</div>
+            </div>
+            <div class="control">
+              <label for="hue">درجة اللون</label>
+              <input type="range" id="hue" min="-180" max="180" value="0" />
+              <div class="value" data-for="hue">0°</div>
+            </div>
+            <div class="control">
+              <label for="sepia">سيبيا</label>
+              <input type="range" id="sepia" min="0" max="100" value="0" />
+              <div class="value" data-for="sepia">0%</div>
+            </div>
+            <div class="control">
+              <label for="grayscale">تدرج رمادي</label>
+              <input type="range" id="grayscale" min="0" max="100" value="0" />
+              <div class="value" data-for="grayscale">0%</div>
+            </div>
+            <div class="control">
+              <label for="blur">تمويه</label>
+              <input type="range" id="blur" min="0" max="20" step="0.1" value="0" />
+              <div class="value" data-for="blur">0px</div>
+            </div>
+            <div class="control">
+              <label for="invert">عكس الألوان</label>
+              <input type="range" id="invert" min="0" max="100" value="0" />
+              <div class="value" data-for="invert">0%</div>
+            </div>
+          </div>
+
+          <div class="nx-pane" id="pane-transform" role="tabpanel">
+            <div class="transform-grid">
+              <button class="nx-button" id="rotate-left" type="button">↶ تدوير 90° يسار</button>
+              <button class="nx-button" id="rotate-right" type="button">↷ تدوير 90° يمين</button>
+              <button class="nx-button" id="flip-h" type="button">⇆ انعكاس أفقي</button>
+              <button class="nx-button" id="flip-v" type="button">⇅ انعكاس عمودي</button>
+              <div class="control full">
+                <label for="rotation">زاوية التدوير</label>
+                <input type="range" id="rotation" min="-180" max="180" value="0" />
+                <div class="value" data-for="rotation">0°</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="nx-pane" id="pane-crop" role="tabpanel">
+            <div class="crop-controls">
+              <label class="select">
+                نسبة الأبعاد
+                <select id="crop-aspect">
+                  <option value="free">حر</option>
+                  <option value="1:1">1 : 1</option>
+                  <option value="16:9">16 : 9</option>
+                  <option value="4:5">4 : 5</option>
+                  <option value="3:2">3 : 2</option>
+                </select>
+              </label>
+              <div class="crop-buttons">
+                <button class="nx-button" id="start-crop" type="button">بدء الاقتصاص</button>
+                <button class="nx-button success" id="apply-crop" type="button" disabled>تطبيق الاقتصاص</button>
+                <button class="nx-button ghost" id="cancel-crop" type="button" disabled>إلغاء</button>
+              </div>
+            </div>
+            <p class="hint">اسحب لتحديد المنطقة المرغوبة. يمكنك سحب الحواف لتعديل الحجم.</p>
+          </div>
+
+          <div class="nx-pane" id="pane-export" role="tabpanel">
+            <div class="export-grid">
+              <label class="select">
+                الصيغة
+                <select id="export-format">
+                  <option value="png">PNG (شفافية)</option>
+                  <option value="jpeg">JPEG</option>
+                  <option value="webp">WebP</option>
+                </select>
+              </label>
+              <div class="control">
+                <label for="quality">الجودة</label>
+                <input type="range" id="quality" min="10" max="100" value="92" />
+                <div class="value" data-for="quality">92%</div>
+              </div>
+              <button class="nx-button primary full" id="download" type="button">تنزيل الصورة</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="nx-canvas-wrap">
+        <div class="canvas-stage">
+          <canvas id="canvas" width="1200" height="800" aria-label="منطقة المعاينة"></canvas>
+          <div class="checker"></div>
+          <div id="crop-overlay" class="crop-overlay hidden" aria-hidden="true">
+            <div class="crop-rect">
+              <div class="handle tl" data-handle="tl"></div>
+              <div class="handle tr" data-handle="tr"></div>
+              <div class="handle bl" data-handle="bl"></div>
+              <div class="handle br" data-handle="br"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tips">
+          <span>اختصارات: R للتدوير، H انعكاس أفقي، V انعكاس عمودي، Esc لإلغاء الاقتصاص</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="nx-footer">
+      <div>© <span id="year"></span> NeuroX — جمال التصميم وقوة الذكاء</div>
+      <div class="socials">
+        <a href="#" aria-label="موقع NeuroX" title="NeuroX">🌐</a>
+        <a href="#" aria-label="تويتر" title="Twitter">𝕏</a>
+        <a href="#" aria-label="GitHub" title="GitHub"></a>
+      </div>
+    </footer>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
